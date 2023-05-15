@@ -5,26 +5,11 @@
 //  Created by Jun on 2023/05/15.
 //
 
-//
-//  ViewController.swift
-//  pullup
-//
-//  Created by Jun on 2023/05/15.
-//
-
 import UIKit
-
-//
-//  ViewController.swift
-//  pullup
-//
-//  Created by Jun on 2023/05/15.
-//
-
-import UIKit
+import Lottie
 
 class ViewController: UIViewController {
-
+    let animationView = LottieAnimationView(name: "confetti")
     let daysInYear = 365
     let cellWidth: CGFloat = 2
     let cellHeight: CGFloat = 2
@@ -73,6 +58,8 @@ class ViewController: UIViewController {
     }()
 
     override func viewDidLoad() {
+
+        
         super.viewDidLoad()
 
         dates.append(today)
@@ -86,6 +73,8 @@ class ViewController: UIViewController {
         view.addSubview(collectionView)
         view.addSubview(button)
         view.addSubview(label)
+
+        
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: collectionViewMargin).isActive = true
@@ -117,14 +106,32 @@ class ViewController: UIViewController {
         // Change the color of the selected cell to green
         let selectedCell = collectionView.cellForItem(at: selectedIndexPath)
         if(selectedCell!.backgroundColor == .lightGray){
-            selectedCell?.backgroundColor = .green
+            UIView.animate(withDuration: 0.2) {
+                selectedCell?.backgroundColor = .green
+            }
+            
             
             // Store the date in UserDefaults
             let selectedDate = dates[selectedIndexPath.row]
             let dateString = dateFormatter.string(from: selectedDate)
             UserDefaults.standard.set(true, forKey: dateString)
+            view.addSubview(animationView)
+            animationView.backgroundColor = .clear
+
+            animationView.frame = self.view.frame
+            animationView.contentMode = .scaleAspectFit
+            animationView.animationSpeed = 2
+            animationView.play(fromProgress: 0, toProgress: 0.8) {
+                if($0){
+                    if let lastSubview = self.view.subviews.last {
+                        lastSubview.removeFromSuperview()
+                    }
+                }
+            }
         }else{
-            selectedCell?.backgroundColor = .lightGray
+            UIView.animate(withDuration: 0.2) {
+                selectedCell?.backgroundColor = .lightGray
+            }
             
             // Remove the date from UserDefaults
             let selectedDate = dates[selectedIndexPath.row]
