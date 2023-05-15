@@ -179,7 +179,7 @@ class CollectionViewCell: UICollectionViewCell {
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // get the selected cell's date based on its index path
-        let today = Date()
+        let today = Calendar.current.date(from: DateComponents(year: 2023, month: 5, day: 13))!
         let date = Calendar.current.date(byAdding: .day, value: indexPath.row, to: today)!
         
         label.text = "\("\(date)".split(separator: " ").first!)"
